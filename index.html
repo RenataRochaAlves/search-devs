@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!--Import Google Icon Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>Search-dev</h1>
+      </div>
+      <form class="col 12">
+        <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="search"
+              type="text"
+              required
+              placeholder="Pesquisa por nome"
+            />
+          </div>
+
+          <div class="input-field form-options">
+            <div class="skills">
+              <label>
+                <input id="java" type="checkbox" />
+                <span>Java</span>
+              </label>
+              <label>
+                <input id="javascript" type="checkbox" />
+                <span>JavaScript</span>
+              </label>
+              <label>
+                <input id="python" type="checkbox" />
+                <span>Python</span>
+              </label>
+            </div>
+            <div class="options">
+              <label>
+                <input name="option-btn" id="and" type="radio" />
+                <span>E</span>
+              </label>
+              <label>
+                <input name="option-btn" id="or" type="radio" />
+                <span>OU</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="col 12 devs"></div>
+    </div>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
