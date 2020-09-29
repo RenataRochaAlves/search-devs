@@ -20,3 +20,44 @@ label {
   justify-content: space-between;
   padding: 0px 10px 0px 10px;
 }
+
+h2 {
+  font-size: 24px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+h3 {
+  font-size: 18px;
+  margin-top: 0px;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.icon {
+  width: 30px;
+  margin: 0px 5px 0px 5px;
+}
+
+.devs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.dev {
+  width: calc(100% / 3 - 40px);
+  min-width: 250px;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}

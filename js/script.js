@@ -35,26 +35,22 @@ function render(json) {
 
   json.forEach((dev) => {
     let devDiv = `
-      <div class="col 4">
-        <div class="row">
-            <img src="${dev.picture}" alt="${dev.name}">
-            <div class="info">
-                <h3>${dev.name}</h3>
-                <div class="languages">`;
+      <div class="dev">
+        <img class="avatar" src="${dev.picture}" alt="${dev.name}">
+        <div class="info">
+            <h3>${dev.name}</h3>
+            <div class="languages">`;
 
     let languages = '';
     dev.languages.forEach((language) => {
-      languages += `<img src="${language.icon}" alt="${language.languageName}">`;
+      languages += `<img class="icon" src="${language.icon}" alt="${language.languageName}">`;
     });
-
-    console.log(languages);
 
     let divEnd = `
                 </div>
             </div>
         </div>
-      </div>
-      `;
+        `;
 
     container.innerHTML += devDiv + languages + divEnd;
   });
