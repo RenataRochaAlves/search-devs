@@ -1,21 +1,32 @@
 let container = document.querySelector('.devs');
+let form = document.querySelector('form');
+let searchInput = document.getElementById('search');
 
 window.addEventListener('load', () => {
-  async function doFetch() {
-    let res = await fetch('http://localhost:3001/devs');
-    let json = await res.json();
-
-    render(doMap(json));
+  async function getArrayOfDevs() {
+    let devsArray = await doFetch();
+    render(doMap(devsArray));
   }
 
-  doFetch();
+  getArrayOfDevs();
 });
+
+async function doFetch() {
+  let res = await fetch('http://localhost:3001/devs');
+  let json = await res.json();
+
+  return json;
+}
 
 function doMap(devs) {
   let devsMapped = devs.map((dev) => {
     return {
       name: dev.name,
-      searchName: dev.name.toLowerCase().replace(/\s+/g, ''),
+      searchName: dev.name
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, ''),
       picture: dev.picture,
       languages: dev.programmingLanguages.map((language) => {
         return {
@@ -30,16 +41,17 @@ function doMap(devs) {
 }
 
 function render(json) {
+  container.innerHTML = '';
   let devsFounded = `<h2>${json.length} dev(s) encontrado(s)</h2>`;
   container.innerHTML = devsFounded;
 
   json.forEach((dev) => {
     let devDiv = `
-      <div class="dev">
+        <div class="dev">
         <img class="avatar" src="${dev.picture}" alt="${dev.name}">
         <div class="info">
-            <h3>${dev.name}</h3>
-            <div class="languages">`;
+        <h3>${dev.name}</h3>
+        <div class="languages">`;
 
     let languages = '';
     dev.languages.forEach((language) => {
@@ -47,11 +59,38 @@ function render(json) {
     });
 
     let divEnd = `
-                </div>
-            </div>
+        </div>
+        </div>
         </div>
         `;
 
     container.innerHTML += devDiv + languages + divEnd;
   });
 }
+
+form.addEventListener('submit', (event) => event.preventDefault());
+
+searchInput.addEventListener('keyup', (event) => {
+  async function getOriginalArray() {
+    let devsArray = await doFetch();
+    let mappedArray = await doMap(devsArray);
+    filterByInput(mappedArray);
+  }
+
+  function filterByInput(array) {
+    // array = doMap(array);
+    let searchedDevs = array.filter((dev) => {
+      return dev.searchName.includes(
+        event.target.value
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      );
+    });
+
+    render(searchedDevs);
+  }
+
+  getOriginalArray();
+});
