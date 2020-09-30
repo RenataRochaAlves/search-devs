@@ -1,13 +1,18 @@
 let container = document.querySelector('.devs');
 let form = document.querySelector('form');
 let searchInput = document.getElementById('search');
+let javaCheck = document.getElementById('java');
+let javaScriptCheck = document.getElementById('javascript');
+let pythonCheck = document.getElementById('python');
+let orOption = document.getElementById('or');
+let andOption = document.getElementById('and');
+
+async function getArrayOfDevs() {
+  let devsArray = await doFetch();
+  render(doMap(devsArray));
+}
 
 window.addEventListener('load', () => {
-  async function getArrayOfDevs() {
-    let devsArray = await doFetch();
-    render(doMap(devsArray));
-  }
-
   getArrayOfDevs();
 });
 
@@ -30,7 +35,7 @@ function doMap(devs) {
       picture: dev.picture,
       languages: dev.programmingLanguages.map((language) => {
         return {
-          languageName: language.id,
+          languageName: language.id.toLowerCase(),
           icon: `./img/${language.id.toLowerCase()}.png`,
         };
       }),
@@ -68,7 +73,63 @@ function render(json) {
   });
 }
 
-form.addEventListener('submit', (event) => event.preventDefault());
+form.addEventListener('change', (event) => {
+  event.preventDefault();
+
+  let optionSearched = '';
+  let languagesSearched = [];
+  if (javaCheck.checked) {
+    languagesSearched.push(javaCheck.id);
+  }
+  if (javaScriptCheck.checked) {
+    languagesSearched.push(javaScriptCheck.id);
+  }
+  if (pythonCheck.checked) {
+    languagesSearched.push(pythonCheck.id);
+  }
+  if (andOption.checked) {
+    optionSearched = andOption.id;
+  } else {
+    optionSearched = orOption.id;
+  }
+
+  getDevsByLanguage(optionSearched, languagesSearched);
+});
+
+function getDevsByLanguage(optionSearched, ...languagesSearched) {
+  async function getOriginalArray() {
+    let devsArray = await doFetch();
+    let mappedArray = await doMap(devsArray);
+    filterByLanguage(mappedArray);
+  }
+
+  function filterByLanguage(devsArray) {
+    let filteredDevs = devsArray.filter((dev) => {
+      return compare(dev, languagesSearched);
+    });
+
+    render(filteredDevs);
+  }
+
+  function compare(dev, languagesSearched) {
+    let comparassions = [];
+    dev.languages.forEach((language) => {
+      comparassions.push(languagesSearched[0].includes(language.languageName));
+    });
+    if (optionSearched == 'or') {
+      return comparassions.includes(true);
+    }
+    if (optionSearched == 'and') {
+      if (comparassions.includes(false) || comparassions.length < 2) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  getOriginalArray();
+}
 
 searchInput.addEventListener('keyup', (event) => {
   async function getOriginalArray() {
